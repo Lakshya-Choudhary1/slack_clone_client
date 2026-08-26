@@ -4,6 +4,7 @@ import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react'
 const App = () => {
   return (
     <>
+     <h1>hiiii</h1>
       <header style={{backgroundColor:"red"}}>
         <Show when="signed-out" >
           <SignInButton mode="modal" />

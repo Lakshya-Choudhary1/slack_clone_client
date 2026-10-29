@@ -1,38 +1,43 @@
-import React, { useEffect, useRef } from "react";
+import React , {useState} from 'react'
+import {UserProfile,SignOutButton,getToken,UserButton} from "@clerk/react";
+
+import axios from "axios";
+
+const check_auth = async() =>{
+
+  const token = await getToken();
+  let url = "http://localhost:3000/protected";
+
+  if(import.meta.env.Mode === 'production'){
+    url = "https://slack-clone-server-3gxm.onrender.com/protected";
+  }
+
+  const res = await axios.get(url,{
+    headers:{
+      Authorization : `Bearer ${token}`
+    } ,
+    withCredentials:true
+  })
+
+  console.log(res.data)
+}
 
 const HomePage = () => {
-  const audioRef = useRef(null);
 
-  useEffect(() => {
-    const player = audioRef.current;
-    if (!player) return;
-
-    player.volume = 1;
-
-    const startAudio = () => {
-      player.play().catch((err) => {
-        console.error("Audio playback failed:", err);
-      });
-    };
-
-    document.addEventListener("click", startAudio, { once: true });
-    document.addEventListener("keydown", startAudio, { once: true });
-
-    return () => {
-      document.removeEventListener("click", startAudio);
-      document.removeEventListener("keydown", startAudio);
-    };
-  }, []);
 
   return (
-    <audio
-      ref={audioRef}
-      src="/SF-cum.mp3"
-      loop
-      preload="auto"
-      autoPlay
-    />
-  );
-};
+    <>
+      <h1>home page</h1>
+
+      <button onClick={check_auth}>get user</button>
+
+      <UserButton className="m-auto" />
+      <br />
+
+      <SignOutButton />
+
+    </>
+  )
+}
 
 export default HomePage;
